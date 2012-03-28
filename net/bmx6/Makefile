@@ -13,11 +13,10 @@ PKG_NAME:=bmx6
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git://git.bmx6.net/bmx6.git
-PKG_REV:=c3ef7d76292a765c5e578bd4113030dc34ee3b9a
+PKG_REV:=570dcc16a71517865aaca977bdca03ab6a18c0f4
+PKG_VERSION:=r2012032701
 
-PKG_VERSION:=r2011031602
-
-#PKG_RELEASE:=1
+PKG_RELEASE:=1.wbm5.1
 #PKG_INSTALL:=1  # this tries to install straight to /usr/sbin/bmx6
 
 PKG_SOURCE_VERSION:=$(PKG_REV)
@@ -57,8 +56,11 @@ endef
 
 define Package/bmx6
   $(call Package/bmx6/Default)
+  DEPENDS:=+kmod-ip6-tunnel +ip
   MENU:=1
 endef
+
+#  DEPENDS:=kmod-ipv6 +kmod-iptunnel6 +kmod-ip6-tunnel +ip
 
 define Package/bmx6-uci-config
   $(call Package/bmx6/Default)
@@ -67,6 +69,17 @@ define Package/bmx6-uci-config
 endef
 
 
+define Package/bmx6-json
+  $(call Package/bmx6/Default)
+  DEPENDS:=bmx6 +libjson
+  TITLE:=josn plugin based on jsonc to export bmx6 status in json syntax
+endef
+
+define Package/bmx6-sms
+  $(call Package/bmx6/Default)
+  DEPENDS:=bmx6
+  TITLE:=sms plugin to disseminate arbitrary data to all mesh nodes via bmx6 description
+endef
 
 
 define Build/Configure
@@ -96,7 +109,18 @@ define Package/bmx6-uci-config/install
 	$(INSTALL_DATA) ./files/etc/config/bmx6 $(1)/etc/config/bmx6
 endef
 
+define Package/bmx6-json/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lib/bmx6_json/bmx6_json.so $(1)/usr/lib/bmx6_json.so
+endef
+
+define Package/bmx6-sms/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lib/bmx6_sms/bmx6_sms.so $(1)/usr/lib/bmx6_sms.so
+endef
 
 $(eval $(call BuildPackage,bmx6))
 $(eval $(call BuildPackage,bmx6-uci-config))
+$(eval $(call BuildPackage,bmx6-json))
+$(eval $(call BuildPackage,bmx6-sms))
 
