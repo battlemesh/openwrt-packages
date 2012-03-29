@@ -1,6 +1,15 @@
 #!/bin/sh
 
-bat_config(){
+bat_load_module()
+{
+	[ -d "/sys/module/batman_adv/" ] && return
+
+	. /etc/functions.sh
+	load_modules /etc/modules.d/*-lib-crc16 /etc/modules.d/*-batman-adv
+}
+
+bat_config()
+{
 	local mesh="$1"
 	local aggregated_ogms bonding fragmentation gw_bandwidth gw_mode gw_sel_class log_level orig_interval hop_penalty vis_mode
 
@@ -15,6 +24,7 @@ bat_config(){
 	config_get hop_penalty "$mesh" hop_penalty
 	config_get vis_mode "$mesh" vis_mode
 	config_get ap_isolation "$mesh" ap_isolation
+	config_get bridge_loop_avoidance "$mesh" bridge_loop_avoidance
 
 	[ -n "$orig_interval" ] && echo $orig_interval > /sys/class/net/$mesh/mesh/orig_interval
 	[ -n "$hop_penalty" ] && echo $hop_penalty > /sys/class/net/$mesh/mesh/hop_penalty
@@ -27,10 +37,11 @@ bat_config(){
 	[ -n "$gw_sel_class" ] && echo $gw_sel_class > /sys/class/net/$mesh/mesh/gw_sel_class
 	[ -n "$vis_mode" ] && echo $vis_mode > /sys/class/net/$mesh/mesh/vis_mode
 	[ -n "$ap_isolation" ] && echo $ap_isolation > /sys/class/net/$mesh/mesh/ap_isolation
-	
+	[ -n "$bridge_loop_avoidance" ] && echo $bridge_loop_avoidance > /sys/class/net/$mesh/mesh/bridge_loop_avoidance
 }
 
-bat_add_interface(){
+bat_add_interface()
+{
 	local mesh="$1"
 	local interface="$2"
 	local interfaces
@@ -47,7 +58,8 @@ bat_add_interface(){
 	done
 }
 
-bat_del_interface(){
+bat_del_interface()
+{
 	local mesh="$1"
 	local interface="$2"
 	local interfaces
