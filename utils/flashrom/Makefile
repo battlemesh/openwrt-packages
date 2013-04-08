@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=flashrom
 PKG_VERSION:=0.9.4
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://download.flashrom.org/releases
@@ -25,7 +25,7 @@ define Package/flashrom
   TITLE:=FlashROM Utility
   URL:=http://www.flashrom.org/
 # XXX: needs <sys/io.h>, only available on these arch right now
-  DEPENDS:=+zlib +pciutils +dmidecode @(arm||armeb||i386||i686||x86_64)
+  DEPENDS:=+zlib +pciutils +dmidecode +libftdi +libusb-compat @(arm||armeb||i386||i686||x86_64)
 endef
 
 define Package/flashrom/description

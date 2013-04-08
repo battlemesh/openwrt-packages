@@ -15,7 +15,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://alioth.debian.org/frs/download.php/3695
 PKG_MD5SUM:=cb7156346e9478c19085c918b605ed43
 
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -36,7 +36,7 @@ define Package/libpcsclite
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE+= (library)
-  DEPENDS:=+libusb +libpthread +librt
+  DEPENDS:=+libusb-1.0 +libpthread +librt
 endef
 
 define Package/libpcsclite/description

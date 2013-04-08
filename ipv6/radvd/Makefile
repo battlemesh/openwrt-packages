@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2006-2011 OpenWrt.org
+# Copyright (C) 2006-2012 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,13 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=radvd
-PKG_VERSION:=1.8.3
+PKG_VERSION:=1.9.1
 PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://v6web.litech.org/radvd/dist \
 		http://download.sourcemage.org/mirror
-PKG_MD5SUM:=73d533b7b20f5554c8d3e33643945442
+PKG_MD5SUM:=e807ad7e9a76d46b6133df391385cd31
 
 PKG_INSTALL:=1
 
@@ -25,7 +25,7 @@ define Package/radvd/Default
   CATEGORY:=IPv6
   TITLE:=IPv6 Routing Advertisement
   URL:=http://v6web.litech.org/radvd/
-  DEPENDS:=+kmod-ipv6
+  DEPENDS:=+kmod-ipv6 +libdaemon
 endef
 
 define Package/radvd

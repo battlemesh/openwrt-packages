@@ -16,13 +16,14 @@ PKG_SOURCE_URL:=@SF/openslp
 PKG_MD5SUM:=ff9999d1b44017281dd00ed2c4d32330
 
 PKG_INSTALL:=1
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/openslp
   SECTION:=net
   CATEGORY:=Network
+  DEPENDS:=+libopenssl
   TITLE:=openslp
   URL:=http://www.openslp.org/
 endef

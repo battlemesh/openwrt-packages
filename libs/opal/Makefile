@@ -1,5 +1,5 @@
-# 
-# Copyright (C) 2006 OpenWrt.org
+#
+# Copyright (C) 2006-2012 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -17,16 +17,12 @@ PKG_MD5SUM:=405ba3b03ec706b6e6f873de340937e2
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)_$(PKG_VERSION)
 
-# Set location of ptlib (Which needs to have been built already)
-export PTLIBDIR=$(BUILD_DIR)/ptlib
-export PTLIBPLUGINDIR=$(BUILD_DIR)/ptlib/plugins/ptlib/
-
 include $(INCLUDE_DIR)/package.mk
 
 define Package/libopal
   SECTION:=libs
   CATEGORY:=Libraries
-  DEPENDS:=+ptlib +uclibcxx
+  DEPENDS:=+ptlib +libstdcpp
   TITLE:=Open Phone Abstraction Library
   URL:=http://www.opalvoip.org/
 endef
@@ -51,14 +47,19 @@ CONFIGURE_ARGS += \
 	--disable-ivr \
 	--disable-rfc4175 \
 	--disable-versioncheck \
+	--disable-theora \
 	--enable-localgsm
 
 CONFIGURE_VARS += \
-	CXXFLAGS="$(TARGET_CFLAGS) -fno-builtin -fno-rtti" \
+	PTLIBDIR="$(BUILD_DIR)/ptlib" \
+	PTLIBPLUGINDIR="$(BUILD_DIR)/ptlib/plugins/ptlib/"
+	CXXFLAGS="$(TARGET_CFLAGS)" \
 
 MAKE_FLAGS += \
 	CFLAGS="$(TARGET_CFLAGS)" \
 	CCFLAGS="$(TARGET_CFLAGS)" \
+	PTLIBDIR="$(BUILD_DIR)/ptlib" \
+	PTLIBPLUGINDIR="$(BUILD_DIR)/ptlib/plugins/ptlib/" \
 	optnoshared
 
 define Build/InstallDev

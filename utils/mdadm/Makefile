@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2008-2011 OpenWrt.org
+# Copyright (C) 2008-2012 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mdadm
-PKG_VERSION:=3.2
+PKG_VERSION:=3.2.5
 PKG_RELEASE:=1
 
 PKG_SOURCE_URL:=@KERNEL/linux/utils/raid/mdadm
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_MD5SUM:=4ac70ccead74f947bf5aa4d189a977a0
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
+PKG_MD5SUM:=2fd33dedcdb06f0d1461f50ddabb7e4a
 
 PKG_BUILD_PARALLEL:=1
 
@@ -24,7 +24,7 @@ define Package/mdadm
   CATEGORY:=Utilities
   TITLE:=A tool for managing Soft RAID under Linux
   URL:=http://www.kernel.org/pub/linux/utils/raid/mdadm/
-  MAINTAINER:=Luka Perkov <openwrt@lukaperkov.net>
+  DEPENDS:=+@KERNEL_DIRECT_IO
 endef
 
 define Package/mdadm/description
@@ -34,7 +34,7 @@ endef
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		CC="$(TARGET_CC)" \
-		CFLAGS="$(TARGET_CFLAGS) -DUCLIBC -DHAVE_STDINT_H" \
+		CFLAGS="$(TARGET_CFLAGS) -DHAVE_STDINT_H" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		mdadm mdassemble
 endef

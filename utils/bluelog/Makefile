@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2012 OpenWrt.org
+# Copyright (C) 2012-2013 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=bluelog
-PKG_VERSION:=1.0.2
+PKG_VERSION:=1.1.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.digifail.com/downloads/software/bluelog
-PKG_MD5SUM:=f406d47ec94970be219cbb38f49402f9
+PKG_MD5SUM:=a5327d64731cd45debb57ab1edbe6e43
 
 PKG_INSTALL:=1
 
@@ -50,14 +50,14 @@ endef
 
 define Package/bluelog-live/description
   $(call Package/bluelog/Default/description)
-  This package contains the bluelog live output files for use with an SSI
-  capable web server.
+  This package contains the files for "Bluelog Live", an optional mode of
+  Bluelog which creates a real-time webpage of discovered Bluetooth devices.
 endef
 
 TARGET_CFLAGS += -DOPENWRT
 
 MAKE_FLAGS += \
-	 LIBS="$(TARGET_LDFLAGS) -lbluetooth"
+	 LIBS="$(TARGET_LDFLAGS) -lbluetooth -lm"
 
 define Package/bluelog/install
 	$(INSTALL_DIR) $(1)/usr/bin
@@ -67,8 +67,21 @@ define Package/bluelog/install
 endef
 
 define Package/bluelog-live/install
-	$(INSTALL_DIR) $(1)/www
-	$(CP) $(PKG_INSTALL_DIR)/var/lib/bluelog $(1)/www/
+	$(INSTALL_DIR) $(1)/www/bluelog
+	$(CP) $(PKG_INSTALL_DIR)/usr/share/bluelog/*.html $(1)/www/bluelog/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/share/bluelog/openwrt.css \
+		$(1)/www/bluelog/style.css
+	$(INSTALL_DIR) $(1)/www/bluelog/images
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/share/bluelog/images/digifail_logo.png \
+		$(PKG_INSTALL_DIR)/usr/share/bluelog/images/email.png \
+		$(PKG_INSTALL_DIR)/usr/share/bluelog/images/favicon.png \
+		$(PKG_INSTALL_DIR)/usr/share/bluelog/images/openwrt_logo.png \
+		$(PKG_INSTALL_DIR)/usr/share/bluelog/images/qrcontact.png \
+		$(1)/www/bluelog/images/
+	$(INSTALL_DIR) $(1)/www/cgi-bin
+	$(CP) $(PKG_INSTALL_DIR)/usr/share/bluelog/cgi-bin/* $(1)/www/cgi-bin/
 endef
 
 $(eval $(call BuildPackage,bluelog))

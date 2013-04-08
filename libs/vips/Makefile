@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2010-2011 OpenWrt.org
+# Copyright (C) 2010-2012 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,13 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=vips
-PKG_VERSION:=7.26.3
+PKG_VERSION:=7.28.9
 PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://www.vips.ecs.soton.ac.uk/supported/7.26/
-PKG_MD5SUM:=1fbf164ef0da8e835a036c56ff659e8e
-PKG_FIXUP = libtool
+PKG_SOURCE_URL:=http://www.vips.ecs.soton.ac.uk/supported/7.28/
+PKG_MD5SUM:=c34e4c6367078c6d50893927aa5924bd
+PKG_FIXUP:=autoreconf
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
@@ -37,7 +37,7 @@ CONFIGURE_ARGS += \
 	--disable-cxx \
 	--disable-threads \
 	--without-cfitsio \
-	--without-fftw3 \
+	--without-fftw \
 	--without-lcms \
 	--without-magick \
 	--without-matio \

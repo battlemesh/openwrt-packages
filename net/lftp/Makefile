@@ -8,23 +8,24 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lftp
-PKG_VERSION:=4.3.4
-PKG_RELEASE:=1
+PKG_VERSION:=4.3.6
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=http://lftp.cybermirror.org \
   http://lftp.cybermirror.org/old
-PKG_MD5SUM:=fbbc296f8c8c73e4b38b2b3228bd94f5
+PKG_MD5SUM:=ffcdbaec5d1416cb6dd754efd43fa61a
 
 PKG_INSTALL:=1
 
+include $(INCLUDE_DIR)/uclibc++.mk
 include $(INCLUDE_DIR)/package.mk
 
 define Package/lftp
   SUBMENU:=File Transfer
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS:=+libncurses +libopenssl +libreadline +uclibcxx +libexpat
+  DEPENDS:=+libncurses +libopenssl +libreadline $(CXX_DEPENDS) +libexpat
   TITLE:=Sophisticated file transfer program
   URL:=http://lftp.yar.ru/
 endef
@@ -45,15 +46,11 @@ CONFIGURE_ARGS += \
 	--disable-static
 
 CONFIGURE_VARS += \
-	CXX="$(STAGING_DIR)/host/bin/g++-uc" \
-	CXXFLAGS="$$$$CXXFLAGS -fno-builtin -I$(STAGING_DIR)/usr/include/uClibc++ -nostdinc++" \
-	CPPFLAGS="$$$$CPPFLAGS -I$(STAGING_DIR)/usr/include/uClibc++" \
-	LDFLAGS="$$$$LDFLAGS" \
-	LIBS="-nodefaultlibs -lc -lz -lutil -lc -luClibc++ -lcurses $(LIBGCC_S) -ldl" \
+	LIBS="-lz -lutil -lcurses -ldl" \
 	i_cv_posix_fallocate_works=no
 
 MAKE_VARS += \
-	LD="\$$$$(CC)"
+	LD="$(TARGET_CXX)"
 
 define Package/lftp/install
 	$(INSTALL_DIR) $(1)/usr/bin

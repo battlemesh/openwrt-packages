@@ -1,5 +1,5 @@
 #!/bin/sh /etc/rc.common
-# Copyright (C) 2009-2011 OpenWrt.org
+# Copyright (C) 2009-2012 OpenWrt.org
 
 START=95
 
@@ -10,9 +10,9 @@ start_instance() {
 	local section="$1"
 
 	# check if section is enabled (default)
-	local enabled
-	config_get_bool enabled "${section}" 'enabled' '0'
-	[ ${enabled} -gt 0 ] || return 1
+	local enable
+	config_get_bool enable "${section}" 'enable' '0'
+	[ ${enable} -gt 0 ] || return 1
 
 	local args=""
 	local val
@@ -41,6 +41,11 @@ start_instance() {
 	local verbosed
 	config_get_bool verbosed "${section}" verbose 0
 	[ "${verbosed}" -ne 0 ] && append args "-v"
+
+	# Defaults were removed for --user and --pidfile options
+	# in sslh 1.11; Define them here instead.
+	append args "--user nobody"
+	append args "--pidfile /var/run/sslh.pid"
 
 	# XXX: allow more that one instance to run simultaneously
 	SERVICE_MATCH_NAME=1 SERVICE_NAME="sslh-dummy-$$" \

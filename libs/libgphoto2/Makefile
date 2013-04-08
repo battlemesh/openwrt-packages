@@ -15,7 +15,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=@SF/gphoto
 PKG_MD5SUM:=735c50ebb15cb8be61bac400ee4afb1e
 
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 PKG_LIBTOOL_PATHS:=. libgphoto2_port
 PKG_INSTALL:=1
 
@@ -30,14 +30,14 @@ endef
 
 define Package/libgphoto2
   $(call Package/libgphoto2/Default)
-  DEPENDS:=+libusb +libexif +libjpeg +libpthread +libltdl $(ICONV_DEPENDS)
+  DEPENDS:=+libexif +libjpeg +libpthread +libltdl $(ICONV_DEPENDS)
   TITLE:=The basic library of the gphoto2 program.
   MENU:=1
 endef
 
 define Package/libgphoto2-drivers
   $(call Package/libgphoto2/Default)
-  DEPENDS:=libgphoto2
+  DEPENDS:=libgphoto2 +libusb-1.0 +libgd
   TITLE:=Gphoto2 drivers for various cameras
 endef
 
@@ -96,6 +96,7 @@ define Package/libgphoto2-drivers/install
 	$(INSTALL_DIR) $(1)/usr/lib/
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libgphoto2{,_port} $(1)/usr/lib/
 	rm -rf $(1)/usr/lib/libgphoto2{,_port}/*/*.{,l}a
+	rm -f $(1)/usr/lib/libgphoto2_port/*/usb.so
 endef
 
 $(eval $(call BuildPackage,libgphoto2))

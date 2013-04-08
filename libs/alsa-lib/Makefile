@@ -16,23 +16,20 @@ PKG_SOURCE_URL:=ftp://ftp.alsa-project.org/pub/lib/ \
 		http://alsa.cybermirror.org/lib/
 PKG_MD5SUM:=7cc05f25e1d5b65da8fb3fdcd540f226
 
-PKG_FIXUP:=libtool
+PKG_LICENSE:=LGPLv2.1 GPLv2
+PKG_LICENSE_FILE:=COPYING aserver/COPYING
+
+PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
-
-ifeq ($(KERNEL),2.4)
-DEPENDS_KMOD:=+kmod-alsa
-else
-DEPENDS_KMOD:=+kmod-sound-core
-endif
 
 define Package/alsa-lib
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=ALSA (Advanced Linux Sound Architecture) library
   URL:=http://www.alsa-project.org/
-  DEPENDS:=@AUDIO_SUPPORT $(DEPENDS_KMOD)
+  DEPENDS:=@AUDIO_SUPPORT +kmod-sound-core +libpthread +librt
 endef
 
 define Package/alsa-lib/description
@@ -44,7 +41,7 @@ TARGET_CFLAGS += $(FPIC)
 
 define Build/Configure
 	$(call Build/Configure/Default, \
-	    --enable-static \
+		--enable-static \
 		--disable-python \
 		--disable-debug \
 		--without-debug \

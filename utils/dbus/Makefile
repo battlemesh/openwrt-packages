@@ -16,7 +16,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://dbus.freedesktop.org/releases/dbus/
 PKG_MD5SUM:=ae6de2562a57516cfabaf56903375ba9
 
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -44,6 +44,7 @@ define Package/libdbus
 $(call Package/dbus/Default)
   CATEGORY:=Libraries
   TITLE+= (library)
+  DEPENDS:= +librt
 endef
 
 define Package/libdbus/Description
@@ -54,7 +55,7 @@ endef
 define Package/dbus
 $(call Package/dbus/Default)
  TITLE+= (daemon)
- DEPENDS:= +libexpat +libdbus +librt
+ DEPENDS:= +libexpat +libdbus
 endef
 
 define Package/dbus/Description

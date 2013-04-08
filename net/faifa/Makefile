@@ -8,15 +8,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=faifa
-PKG_REV:=82
-PKG_VERSION:=r$(PKG_REV)
-PKG_RELEASE:=1
+PKG_VERSION:=2012-09-13
+PKG_RELEASE:=$(PKG_SOURCE_VERSION)
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://svn.open-plc.org/trunk/
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=git://github.com/ffainelli/faifa.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=$(PKG_REV)
-PKG_SOURCE_PROTO:=svn
+PKG_SOURCE_VERSION:=2842afc90bd9ca08ed2a6c83c04f4015982e6007
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
 PKG_INSTALL:=1
 
@@ -32,6 +31,7 @@ define Package/libfaifa
   TITLE+= (library)
   SECTION:=libs
   CATEGORY:=Libraries
+  DEPENDS:=+libpcap +libpthread
 endef
 
 define Package/libfaifa/description
@@ -42,7 +42,7 @@ define Package/faifa
   $(call Package/faifa/Default)
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS:=+libpthread +libopenssl +libpcap +libfaifa
+  DEPENDS:=+libpthread +libpcap +libfaifa
   TITLE+= (command line)
 endef
 
@@ -53,11 +53,21 @@ define Package/faifa/description
   frames.
 endef
 
+define Package/hpavcfg
+  $(call Package/faifa/Default)
+  SECTION:=net
+  CATEGORY:=Network
+  TITLE:=HomePlug AV lightweight configurator
+endef
+
+define Package/hpavcfg/description
+   Lightweight configuration tool, only capable of setting a local device key (NMK)
+endef
+
 TARGET_CFLAGS += $(FPIC)
 
 MAKE_FLAGS += \
 	OS=LINUX \
-	SVN_REV=$(PKG_REV) \
 	CFLAGS="$(TARGET_CFLAGS) $(TARGET_CPPFLAGS)" \
 	LDFLAGS="$(TARGET_LDFLAGS)"
 
@@ -76,5 +86,11 @@ define Package/libfaifa/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libfaifa.so* $(1)/usr/lib
 endef
 
+define Package/hpavcfg/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/hpav_cfg $(1)/usr/bin
+endef
+
 $(eval $(call BuildPackage,faifa))
 $(eval $(call BuildPackage,libfaifa))
+$(eval $(call BuildPackage,hpavcfg))

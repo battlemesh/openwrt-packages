@@ -7,6 +7,7 @@
 #
 
 include $(TOPDIR)/rules.mk
+include $(INCLUDE_DIR)/uclibc++.mk
 
 RELEASEVER:=3.2.0
 
@@ -33,7 +34,7 @@ endef
 
 define Package/$(PKG_NAME)
   $(call Package/yate/Default)
-  DEPENDS:=+libpthread +uclibcxx
+  DEPENDS:=+libpthread $(CXX_DEPENDS)
   TITLE:=Yet Another Telphony Engine
   MENU:=1
 endef
@@ -239,7 +240,7 @@ $(eval $(call BuildPlugin,monitoring,server,Monitoring/gathering Information,))
 $(eval $(call BuildPlugin,mrcpspeech,server,MRCP v2 Voice/Tone Detector and Synthesizer,))
 $(eval $(call BuildPlugin,msgsniff,,Sample Message Sniffer,))
 $(eval $(call BuildPlugin,mux,,Data Multiplexor,))
-$(eval $(call BuildPlugin,mysqldb,server,MySQL Backend DB,+libmysqlclient))
+$(eval $(call BuildPlugin,mysqldb,server,MySQL Backend DB,+libmysqlclient-r))
 $(eval $(call BuildPlugin,openssl,,Encrypted transport (OpenSSL),+libopenssl))
 $(eval $(call BuildPlugin,osschan,client,OSS Sound Channel,))
 $(eval $(call BuildPlugin,park,server,Call Parking,))

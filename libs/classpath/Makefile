@@ -15,7 +15,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@GNU/classpath
 PKG_MD5SUM:=90c6571b8b0309e372faa0f9f6255ea9
 
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -26,6 +26,7 @@ define Package/classpath
   TITLE:=GNU Classpath
   URL:=http://www.gnu.org/software/classpath/
   MAINTAINER:=Roberto Riggio <roberto.riggio@create-net.org>
+  DEPENDS:=+alsa-lib +libgmp +libmagic
 endef
 
 define Package/classpath/Description

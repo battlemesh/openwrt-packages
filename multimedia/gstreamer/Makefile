@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2008-2010 OpenWrt.org
+# Copyright (C) 2008-2012 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,14 +8,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gstreamer
-PKG_VERSION:=0.10.34
+PKG_VERSION:=0.10.36
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://gstreamer.freedesktop.org/src/gstreamer/
-PKG_MD5SUM:=e6938af242cd002be9f0b6441e848d83
+PKG_MD5SUM:=a0cf7d6877f694a1a2ad2b4d1ecb890b
 
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 PKG_REMOVE_FILES:=autogen.sh aclocal.m4
 
 PKG_INSTALL:=1
@@ -82,13 +82,9 @@ endef
 GST_VERSION:=0.10
 
 CONFIGURE_ARGS += \
-	--disable-debug \
 	--disable-examples \
 	--disable-tests \
 	--disable-valgrind \
-	\
-	--disable-gst-debug \
-	\
 	--without-libiconv-prefix \
 	--without-libintl-prefix \
 	--without-x \

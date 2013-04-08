@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2008-2011 OpenWrt.org
+# Copyright (C) 2008-2012 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,15 +8,15 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=freeradius2
-PKG_VERSION:=2.1.12
+PKG_VERSION:=2.2.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=freeradius-server-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=ftp://ftp.freeradius.org/pub/freeradius/
-PKG_MD5SUM:=862d3a2c11011e61890ba84fa636ed8c
+PKG_MD5SUM:=0fb333fe6a64eb2b1dd6ef67f7bca119
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/freeradius-server-$(PKG_VERSION)
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -275,7 +275,7 @@ endef
 define Package/freeradius2-mod-sql-mysql
   $(call Package/freeradius2/Default)
   DEPENDS:=freeradius2-mod-sql \
-  	+PACKAGE_freeradius2-mod-sql-mysql:libmysqlclient_r
+  	+PACKAGE_freeradius2-mod-sql-mysql:libmysqlclient-r
   TITLE:=MySQL module
 endef
 
@@ -314,6 +314,12 @@ define Package/freeradius2-utils
   $(call Package/freeradius2/Default)
   DEPENDS:=freeradius2
   TITLE:=Misc. client utilities
+endef
+
+define Package/freeradius2-mod-sqllog
+  $(call Package/freeradius2/Default)
+  DEPENDS:=freeradius2
+  TITLE:=SQL Logging module
 endef
 
 CONFIGURE_ARGS+= \
@@ -419,6 +425,15 @@ ifneq ($(SDK)$(CONFIG_PACKAGE_freeradius2-mod-sql-pgsql),)
 else
   CONFIGURE_ARGS+= --without-rlm_sql_postgresql
 endif
+
+ifneq ($(SDK)$(CONFIG_PACKAGE_freeradius2-mod-sqllog),)
+  CONFIGURE_ARGS+= \
+        --with-rlm_sql_log \
+        --with-experimental-modules \
+else
+  CONFIGURE_ARGS+= --without-rlm_sql_log
+endif
+
 
 ifneq ($(SDK)$(CONFIG_PACKAGE_freeradius2-mod-sql-sqlite),)
   CONFIGURE_ARGS+= \
@@ -587,6 +602,7 @@ $(eval $(call BuildPlugin,freeradius2-mod-sql-mysql,rlm_sql_mysql,))
 $(eval $(call BuildPlugin,freeradius2-mod-sql-pgsql,rlm_sql_postgresql,))
 $(eval $(call BuildPlugin,freeradius2-mod-sql-sqlite,rlm_sql_sqlite,))
 $(eval $(call BuildPlugin,freeradius2-mod-sqlcounter,rlm_sqlcounter,))
+$(eval $(call BuildPlugin,freeradius2-mod-sqllog,rlm_sql_log,))
 $(eval $(call BuildPlugin,freeradius2-mod-radutmp,rlm_radutmp,modules/radutmp modules/sradutmp,modules,))
 $(eval $(call BuildPlugin,freeradius2-mod-logintime,rlm_logintime,modules/logintime,modules,))
 $(eval $(call BuildPlugin,freeradius2-mod-expr,rlm_expr,modules/expr,modules,))

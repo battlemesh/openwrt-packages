@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2009-2012 OpenWrt.org
+# Copyright (C) 2009-2013 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,14 +8,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=transmission
-PKG_VERSION:=2.50
-PKG_RELEASE:=2
+PKG_VERSION:=2.77
+PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=http://mirrors.m0k.org/transmission/files
-PKG_MD5SUM:=c3611108e34fe6ebdcf93da5beb89045
+PKG_MD5SUM:=60c0e77a1852656215f7102a437b2a3d
 
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
@@ -43,6 +43,7 @@ endef
 
 define Package/transmission-remote
   $(call Package/transmission/template)
+  DEPENDS:=+libcurl +libopenssl +libpthread +libevent2 +librt +libminiupnpc
 endef
 
 define Package/transmission-web

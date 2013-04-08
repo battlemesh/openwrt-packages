@@ -15,7 +15,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://downloads.us.xiph.org/releases/libshout/
 PKG_MD5SUM:=4f75fc9901c724b712c371c9a1e782d3
 
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -24,7 +24,7 @@ TARGET_CFLAGS += $(FPIC) -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
 define Package/libshout
   SECTION:=libs
-  DEPENDS:= +libspeex +libtheora +libvorbis +libvorbisidec
+  DEPENDS:= +libspeex +libtheora +libvorbis +libvorbisidec +libpthread
   CATEGORY:=Libraries
   TITLE:=Library which can be used to write a source client like ices
   URL:=http://www.icecast.org/download.php

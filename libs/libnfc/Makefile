@@ -15,7 +15,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://libnfc.googlecode.com/files
 PKG_MD5SUM:=c99b2b9212b1a1b064055a199779bdd8
 
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -29,7 +29,7 @@ define Package/libnfc
 $(call Package/libnfc/Default)
   SECTION:=libs
   CATEGORY:=Libraries
-  DEPENDS:=+libusb +pcscd +ccid
+  DEPENDS:=+libusb-compat +pcscd +ccid
 endef
 
 define Package/libnfc/description
@@ -77,6 +77,7 @@ define Package/libnfc-examples/description
 endef
 
 TARGET_CFLAGS += $(FPIC)
+CONFIGURE_ARGS += --without-readline
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include

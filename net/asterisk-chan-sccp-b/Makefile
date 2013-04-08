@@ -13,7 +13,7 @@ PKG_VERSION:=r$(PKG_REV)
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://chan-sccp-b.svn.sourceforge.net/svnroot/chan-sccp-b/trunk
+PKG_SOURCE_URL:=http://svn.code.sf.net/p/chan-sccp-b/code/trunk
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=$(PKG_REV)
 PKG_SOURCE_PROTO:=svn
@@ -27,7 +27,7 @@ define Package/asterisk18-chan-sccp-b
   TITLE:=SCCP channel provider for asterisk
   URL:=http://chan-sccp-b.net.sourceforge.net/
   MAINTAINER:=Hans Zandbelt <hans.zandbelt@gmail.com>
-  DEPENDS:=+asterisk18
+  DEPENDS:=+asterisk18 +libltdl
 endef
 
 define Package/asterisk18-chan-sccp-b/description

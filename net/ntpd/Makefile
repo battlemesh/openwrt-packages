@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ntp
 PKG_VERSION:=4.2.6p5
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/
@@ -17,8 +17,8 @@ PKG_MD5SUM:=00df80a84ec9528fcfb09498075525bc
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(BUILD_VARIANT)/$(PKG_NAME)-$(PKG_VERSION)
 
-PKG_BUILD_DEPENDS:=libelf
-PKG_FIXUP:=libtool
+PKG_BUILD_DEPENDS:=libelf1
+PKG_FIXUP:=autoreconf
 PKG_LIBTOOL_PATHS:=. sntp
 
 include $(INCLUDE_DIR)/package.mk
@@ -116,9 +116,6 @@ endef
 define Package/ntpd/conffiles
 /etc/ntp.conf
 endef
-
-TARGET_CPPFLAGS += \
-	-I$(STAGING_DIR)/usr/include/libelf
 
 CONFIGURE_VARS += \
 	ac_cv_header_md5_h=no \

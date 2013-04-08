@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=vsftpd
-PKG_VERSION:=2.3.4
-PKG_RELEASE:=4
+PKG_VERSION:=3.0.2
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://security.appspot.com/downloads/
-PKG_MD5SUM:=2ea5d19978710527bb7444d93b67767a
+PKG_MD5SUM:=8b00c749719089401315bd3c44dddbb2
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -34,6 +34,7 @@ define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		CC="$(TARGET_CC)" \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		vsftpd
 endef
 

@@ -23,7 +23,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/crtmpserver
   SECTION:=multimedia
   CATEGORY:=Multimedia
-  DEPENDS:=+libopenssl +libstdcpp
+  DEPENDS:=+libopenssl +libstdcpp +liblua
   TITLE:=C++ RTMP Server
   URL:=http://www.rtmpd.com/
 endef
@@ -61,7 +61,7 @@ define Build/Configure
 endef
 
 define Build/Compile
-	$(MAKE) $(PKG_JOBS) -C $(PKG_BUILD_DIR)/builders/make \
+	+$(MAKE) $(PKG_JOBS) -C $(PKG_BUILD_DIR)/builders/make \
 		PLATFORM=linux-openwrt-uclibc
 endef
 

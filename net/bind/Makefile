@@ -8,23 +8,26 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=bind
-PKG_VERSION:=9.9.0
+PKG_VERSION:=9.9.1-P3
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:= \
 	ftp://ftp.isc.org/isc/bind9/$(PKG_VERSION) \
 	http://www.mirrorservice.org/sites/ftp.isc.org/isc/bind9/$(PKG_VERSION)
-PKG_MD5SUM:=9281d0b04f711d28153ba1ab04a54026
+PKG_MD5SUM:=8f407c9a988d7b447a54b4cb54230dcb
 
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
+PKG_REMOVE_FILES:=aclocal.m4 libtool.m4
+
+PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/bind/Default
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS:=+bind-libs +libopenssl
+  DEPENDS:=+bind-libs
   TITLE:=bind
   URL:=https://www.isc.org/software/bind
   SUBMENU:=IP Addresses and Names
@@ -33,6 +36,7 @@ endef
 define Package/bind-libs
   SECTION:=libs
   CATEGORY:=Libraries
+  DEPENDS:=+libopenssl
   TITLE:=bind shared libraries
   URL:=https://www.isc.org/software/bind
 endef
@@ -84,6 +88,7 @@ CONFIGURE_ARGS += \
 	--enable-static \
 	--with-randomdev="/dev/urandom" \
 	--disable-threads \
+	--disable-linux-caps \
 	--with-openssl="$(STAGING_DIR)/usr" \
 	--with-libtool \
 	--with-libxml2=no \
@@ -102,9 +107,7 @@ define Build/Compile
 		CFLAGS="-O2" \
 		LIBS="" \
 		gen
-	$(MAKE) -C $(PKG_BUILD_DIR) \
-		DESTDIR="$(PKG_INSTALL_DIR)" \
-		all install
+	$(call Build/Compile/Default)
 endef
 
 define Package/bind-libs/install

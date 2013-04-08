@@ -15,7 +15,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://libtorrent.rakshasa.no/downloads
 PKG_MD5SUM:=b804c45c01c40312926bcea6b55bb084
 
-PKG_FIXUP:=libtool
+PKG_FIXUP:=autoreconf
 PKG_BUILD_PARALLEL:=1
 PKG_INSTALL:=1
 
@@ -27,7 +27,7 @@ define Package/rtorrent
   CATEGORY:=Network
   TITLE:=BitTorrent client for ncurses
   URL:=http://libtorrent.rakshasa.no/
-  DEPENDS:=+libcurl +libtorrent +libncurses +libsigcxx +xmlrpc-c-server +libpthread
+  DEPENDS:=+libcurl +libtorrent +libncursesw +libsigcxx +xmlrpc-c-server +libpthread
   MAINTAINER:=Luka Perkov <openwrt@lukaperkov.net>
 endef
 
