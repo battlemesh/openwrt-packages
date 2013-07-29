@@ -33,6 +33,12 @@ append_bool() {
 	[ "$_loctmp" -gt 0 ] && append args "$value"
 }
 
+append_switch() {
+	local value="$1"
+	local switch="$2"
+	append args "$switch $value"
+}
+
 append_parm() {
 	local section="$1"
 	local option="$2"
@@ -98,6 +104,7 @@ babel_config() {
 	append_bool "$cfg" 'assume_wireless' '-w'
 	append_bool "$cfg" 'no_split_horizon' '-s'
 	append_bool "$cfg" 'keep_unfeasible' '-u'
+	append_bool "$cfg" 'random_router_id' '-r'
 
 	append_parm "$cfg" 'multicast_address' '-m'
 	append_parm "$cfg" 'port' '-p'
@@ -105,12 +112,13 @@ babel_config() {
 	append_parm "$cfg" 'hello_interval' '-h'
 	append_parm "$cfg" 'wired_hello_interval' '-H'
 	append_parm "$cfg" 'diversity' '-z'
+	append_parm "$cfg" 'smoothing_half_time' '-M'
 	append_parm "$cfg" 'kernel_priority' '-k'
 	append_parm "$cfg" 'duplication_priority' '-A'
 	append_parm "$cfg" 'debug' '-d'
 	append_parm "$cfg" 'local_server' '-g'
 	append_parm "$cfg" 'export_table' '-t'
-	append_parm "$cfg" 'import_table' '-T'
+	config_list_foreach "$cfg" 'import_table' append_switch '-T'
 	append_parm "$cfg" 'conf_file' '-c'
 	append_parm "$cfg" 'log_file' '-L'
 }

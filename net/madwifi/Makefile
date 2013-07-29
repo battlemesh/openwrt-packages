@@ -195,6 +195,7 @@ MAKE_ARGS:= \
 	TOOLPREFIX="$(KERNEL_CROSS)" \
 	TOOLPATH="$(KERNEL_CROSS)" \
 	KERNELPATH="$(LINUX_DIR)" \
+	KERNELRELEASE="$(LINUX_VERSION)" \
 	LDOPTS="--no-warn-mismatch " \
 	ATH_RATE="$(RATE_CONTROL)" \
 	ATH_CAP_SUPERG_COMP="$(COMPRESSION)" \
@@ -229,8 +230,6 @@ define Build/Prepare
 		$(PKG_BUILD_DIR)/hal/public/arm11*.inc
 	$(SED) 's,mtune=arm1136j-s,mtune=mpcore,' \
 		$(PKG_BUILD_DIR)/hal/public/arm11*.inc
-	# preset kernel version
-	echo 'char *uts_release = "$(LINUX_VERSION)";' > $(PKG_BUILD_DIR)/kernelversion.c
 endef
 
 ifeq ($(findstring AHB,$(BUS)),AHB)

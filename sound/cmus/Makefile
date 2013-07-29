@@ -9,12 +9,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cmus
-PKG_VERSION:=2.4.0
-PKG_RELEASE:=1
+PKG_VERSION:=2.5.0
+PKG_RELEASE:=3
 
 PKG_SOURCE:=$(PKG_NAME)-v$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=@SF/cmus
-PKG_MD5SUM:=0c5a9f4032e632e5f6b6a49f53df1e7e
+PKG_MD5SUM:=9af16d324060447996ed25e1a9c1c7d8
 
 PKG_INSTALL:=1
 PKG_BUILD_DIR:=$(BUILD_DIR)/cmus-v$(PKG_VERSION)
@@ -29,8 +29,15 @@ define Package/cmus
 	+libpthread +librt +libncursesw $(ICONV_DEPENDS) \
 	+AUDIO_SUPPORT:alsa-lib \
 	+BUILD_PATENTED:libmad +libvorbisidec +libflac
+
   TITLE:=C* Music Player
+  MAINTAINER:=Peter Wagner <tripolar@gmx.at>
   URL:=http://cmus.sourceforge.net/
+  MENU:=1
+endef
+
+define Package/cmus/config
+  source "$(SOURCE)/Config.in"
 endef
 
 define Package/cmus/description
@@ -63,7 +70,7 @@ define Build/Configure
 		CONFIG_AAC=n \
 		CONFIG_FFMPEG=n \
 		CONFIG_ROAR=n \
-		CONFIG_PULSE=n \
+		CONFIG_PULSE=$(if $(CONFIG_CMUS_WITH_PULSE),a,n) \
 		CONFIG_ALSA=$(if $(CONFIG_AUDIO_SUPPORT),a,n) \
 		CONFIG_AO=n \
 		CONFIG_ARTS=n \
